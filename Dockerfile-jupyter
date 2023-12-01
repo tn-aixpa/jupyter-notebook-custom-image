@@ -30,4 +30,4 @@ RUN pip3 install ./nefertem/plugins/sqlalchemy*
 RUN pip3 install ./nefertem/plugins/ydata*
 COPY notebooks/ /home/jovyan/tutorial
 # Cleanup
-RUN rm -rf digitalhub-core nefertem
+RUN rm -rf digitalhub-sdk nefertem
