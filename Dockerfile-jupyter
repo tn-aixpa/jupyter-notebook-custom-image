@@ -6,7 +6,7 @@ LABEL org.opencontainers.image.source=https://github.com/scc-digitalhub/jupyter-
 RUN conda create -n digitalhub-core python=3.9 --no-default-packages
 
 # Clone digitalhub-core repo
-ARG DHUB_VERSION=0.0.10
+ARG DHUB_VERSION=0.0.11
 RUN wget https://github.com/scc-digitalhub/digitalhub-sdk/archive/refs/tags/$DHUB_VERSION.zip
 RUN unzip $DHUB_VERSION.zip
 RUN mv digitalhub-sdk-$DHUB_VERSION digitalhub-sdk
@@ -40,4 +40,4 @@ RUN pip3 install ./nefertem/plugins/ydata*
 COPY notebooks/ /home/jovyan/tutorial
 
 # Cleanup
-RUN rm -rf digitalhub-sdk nefertem $DHUB_VERSION.zip
+RUN rm -rf digitalhub-sdk nefertem $DHUB_VERSION.zip v2.0.2.zip
