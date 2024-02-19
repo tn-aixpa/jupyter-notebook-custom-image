@@ -1,4 +1,4 @@
-FROM quay.io/mlrun/jupyter:1.4.0
+FROM mlrun/jupyter:1.6.0-rc33
 
 LABEL org.opencontainers.image.source=https://github.com/scc-digitalhub/jupyter-notebook-custom-image
 
@@ -6,16 +6,15 @@ LABEL org.opencontainers.image.source=https://github.com/scc-digitalhub/jupyter-
 RUN conda create -n digitalhub-core python=3.9 --no-default-packages
 
 # Clone digitalhub-core repo
-ARG DHUB_VERSION=0.0.11
+ARG DHUB_VERSION=0.2.18
 RUN wget https://github.com/scc-digitalhub/digitalhub-sdk/archive/refs/tags/$DHUB_VERSION.zip
 RUN unzip $DHUB_VERSION.zip
 RUN mv digitalhub-sdk-$DHUB_VERSION digitalhub-sdk
 
 # Install remote-only dependencies in base kernel
 SHELL ["conda", "run", "-n", "base", "/bin/bash", "-c"]
-RUN pip install digitalhub-sdk/core
-RUN pip install digitalhub-sdk/data/modules/dbt
-RUN pip install digitalhub-sdk/data/modules/nefertem
+RUN pip install digitalhub-sdk/core digitalhub-sdk/data digitalhub-sdk/ml digitalhub-sdk/
+RUN pip install digitalhub-sdk/*/modules/*
 
 # Install full dependencies in digitalhub-core kernel
 SHELL ["conda", "run", "-n", "digitalhub-core", "/bin/bash", "-c"]
@@ -23,21 +22,24 @@ RUN python -m pip install ipykernel
 RUN python -m ipykernel install --name digitalhub-core --display-name "digitalhub-core" --user
 
 # Install digitalhub-core, dbt, neferetem
-RUN pip install digitalhub-sdk/core
-RUN pip install digitalhub-sdk/data/modules/dbt[local]
+RUN pip install digitalhub-sdk/core digitalhub-sdk/data digitalhub-sdk/ml digitalhub-sdk/
+RUN pip install digitalhub-sdk/core/modules/container
+RUN pip install digitalhub-sdk/data/modules/dbt
+RUN pip install dbt-postgres==1.6.7
 RUN pip install digitalhub-sdk/data/modules/nefertem[local]
 
 # Install nefertem plugins
-RUN wget https://github.com/scc-digitalhub/nefertem/archive/refs/tags/v2.0.2.zip
-RUN unzip v2.0.2.zip
-RUN mv nefertem-2.0.2 nefertem
+RUN wget https://github.com/scc-digitalhub/nefertem/archive/refs/tags/2.0.4.zip
+RUN unzip 2.0.4.zip
+RUN mv nefertem-2.0.4 nefertem
+RUN pip3 install ./nefertem
 RUN pip3 install ./nefertem/plugins/frictionless*
 RUN pip3 install ./nefertem/plugins/duckdb*
 RUN pip3 install ./nefertem/plugins/sqlalchemy*
 RUN pip3 install ./nefertem/plugins/ydata*
 
 # Copy notebooks into tutorial folder
-COPY notebooks/ /home/jovyan/tutorial
+COPY notebooks/ /home/jovyan/tutorials
 
 # Cleanup
-RUN rm -rf digitalhub-sdk nefertem $DHUB_VERSION.zip v2.0.2.zip
+RUN rm -rf digitalhub-sdk nefertem $DHUB_VERSION.zip 2.0.4.zip
