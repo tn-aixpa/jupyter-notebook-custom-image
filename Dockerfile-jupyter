@@ -6,7 +6,7 @@ LABEL org.opencontainers.image.source=https://github.com/scc-digitalhub/jupyter-
 RUN conda create -n digitalhub-core python=3.9 --no-default-packages
 
 # Clone digitalhub-core repo
-ARG DHUB_VERSION=0.2.18
+ARG DHUB_VERSION=0.2.21
 RUN wget https://github.com/scc-digitalhub/digitalhub-sdk/archive/refs/tags/$DHUB_VERSION.zip
 RUN unzip $DHUB_VERSION.zip
 RUN mv digitalhub-sdk-$DHUB_VERSION digitalhub-sdk
@@ -29,9 +29,10 @@ RUN pip install dbt-postgres==1.6.7
 RUN pip install digitalhub-sdk/data/modules/nefertem[local]
 
 # Install nefertem plugins
-RUN wget https://github.com/scc-digitalhub/nefertem/archive/refs/tags/2.0.4.zip
-RUN unzip 2.0.4.zip
-RUN mv nefertem-2.0.4 nefertem
+ARG NEFERTEM_VERSION=2.0.5
+RUN wget https://github.com/scc-digitalhub/nefertem/archive/refs/tags/$NEFERTEM_VERSION.zip
+RUN unzip $NEFERTEM_VERSION.zip
+RUN mv nefertem-$NEFERTEM_VERSION nefertem
 RUN pip3 install ./nefertem
 RUN pip3 install ./nefertem/plugins/frictionless*
 RUN pip3 install ./nefertem/plugins/duckdb*
@@ -42,4 +43,4 @@ RUN pip3 install ./nefertem/plugins/ydata*
 COPY notebooks/ /home/jovyan/tutorials
 
 # Cleanup
-RUN rm -rf digitalhub-sdk nefertem $DHUB_VERSION.zip 2.0.4.zip
+RUN rm -rf digitalhub-sdk nefertem $DHUB_VERSION.zip $NEFERTEM_VERSION.zip
