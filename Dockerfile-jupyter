@@ -6,7 +6,7 @@ LABEL org.opencontainers.image.source=https://github.com/scc-digitalhub/jupyter-
 RUN conda create -n digitalhub-core python=3.9 --no-default-packages
 
 # Clone digitalhub-core repo
-ARG DHUB_VERSION=0.2.21
+ARG DHUB_VERSION=0.2.22
 RUN wget https://github.com/scc-digitalhub/digitalhub-sdk/archive/refs/tags/$DHUB_VERSION.zip
 RUN unzip $DHUB_VERSION.zip
 RUN mv digitalhub-sdk-$DHUB_VERSION digitalhub-sdk
@@ -21,7 +21,7 @@ SHELL ["conda", "run", "-n", "digitalhub-core", "/bin/bash", "-c"]
 RUN python -m pip install ipykernel
 RUN python -m ipykernel install --name digitalhub-core --display-name "digitalhub-core" --user
 
-# Install digitalhub-core, dbt, neferetem
+# Install digitalhub, container, dbt, neferetem
 RUN pip install digitalhub-sdk/core digitalhub-sdk/data digitalhub-sdk/ml digitalhub-sdk/
 RUN pip install digitalhub-sdk/core/modules/container
 RUN pip install digitalhub-sdk/data/modules/dbt
