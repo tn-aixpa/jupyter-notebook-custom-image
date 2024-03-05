@@ -6,7 +6,7 @@ LABEL org.opencontainers.image.source=https://github.com/scc-digitalhub/jupyter-
 RUN conda create -n digitalhub-core python=3.9 --no-default-packages
 
 # Clone digitalhub-core repo
-ARG DHUB_VERSION=0.2.22
+ARG DHUB_VERSION=0.2.26
 RUN wget https://github.com/scc-digitalhub/digitalhub-sdk/archive/refs/tags/$DHUB_VERSION.zip
 RUN unzip $DHUB_VERSION.zip
 RUN mv digitalhub-sdk-$DHUB_VERSION digitalhub-sdk
@@ -14,7 +14,7 @@ RUN mv digitalhub-sdk-$DHUB_VERSION digitalhub-sdk
 # Install remote-only dependencies in base kernel
 SHELL ["conda", "run", "-n", "base", "/bin/bash", "-c"]
 RUN pip install digitalhub-sdk/core digitalhub-sdk/data digitalhub-sdk/ml digitalhub-sdk/
-RUN pip install digitalhub-sdk/*/modules/*
+RUN pip install digitalhub-sdk/*/modules/* --no-deps
 
 # Install full dependencies in digitalhub-core kernel
 SHELL ["conda", "run", "-n", "digitalhub-core", "/bin/bash", "-c"]
