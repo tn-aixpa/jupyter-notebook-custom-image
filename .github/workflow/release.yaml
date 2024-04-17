@@ -13,7 +13,7 @@ jobs:
       matrix:
         include:
           - dockerfile: ./Dockerfile-jupyter
-            image: ghcr.io/${{ github.repository }}/wrapper-dbt
+            image: ghcr.io/${{ github.repository }}/jupyter
             context: ./
     permissions:
       contents: read
