@@ -1,38 +1,30 @@
-import mlrun
-import pandas as pd
-
-@mlrun.handler(outputs=["dataset"])
-def downloader(context, url: mlrun.DataItem):
-    # read and rewrite to normalize and export as data
-    df = url.as_df(format='parquet')
-    return df
+from digitalhub_core_kfp.dsl import pipeline_context
 
 
-@mlrun.handler(outputs=["dataset-measures"])
-def measure(context, di: mlrun.DataItem):
+def myhandler(di_key):
+    with pipeline_context() as pc:
+        s1 = pc.step(
+            name="step1",
+            function="mlrun-downloader",
+            action="job",
+            inputs=[{"url": di_key}],
+            outputs=[{"dataset": "dataset"}],
+        )
+
+        s2_1 = pc.step(
+            name="step2.1",
+            function="mlrun-process-spire",
+            action="job",
+            inputs=[{"di": s1.outputs["dataset"]}],
+            outputs=[{"dataset-spire": "dataset-spire"}],
+        )
+
+        s2_2 = pc.step(
+            name="step2.2",
+            function="mlrun-process-measure",
+            action="job",
+            inputs=[{"di": s1.outputs["dataset"]}],
+            outputs=[{"dataset-measures": "dataset-measures"}],
+        )
     
-    KEYS = ['00:00-01:00', '01:00-02:00', '02:00-03:00', '03:00-04:00', '04:00-05:00', '05:00-06:00', '06:00-07:00', '07:00-08:00', '08:00-09:00', '09:00-10:00', '10:00-11:00', '11:00-12:00', '12:00-13:00', '13:00-14:00', '14:00-15:00', '15:00-16:00', '16:00-17:00', '17:00-18:00', '18:00-19:00', '19:00-20:00', '20:00-21:00', '21:00-22:00', '22:00-23:00', '23:00-24:00']
-    COLUMNS=['data','codice spira']
-    
-    df = di.as_df()
-    rdf = df[COLUMNS+KEYS]
-    ls = []
-    for key in KEYS:
-        k = key.split("-")[0]
-        xdf = rdf[COLUMNS + [key]]
-        xdf['time'] = xdf.data.apply(lambda x: x+' ' +k)
-        xdf['value'] = xdf[key]
-        ls.append(xdf[['time','codice spira','value']])
-    edf = pd.concat(ls)
-    return edf
-
-
-
-@mlrun.handler(outputs=["dataset-spire"])
-def process(context, di: mlrun.DataItem):
-    
-    KEYS=['codice spira','longitudine','latitudine','Livello','tipologia','codice','codice arco','codice via','Nome via', 'stato','direzione','angolo','geopoint']
-    df = di.as_df()
-    sdf= df.groupby(['codice spira']).first().reset_index()[KEYS]
-
-    return sdf
+        return s2_1.outputs["dataset-spire"], s2_2.outputs["dataset-measures"]
