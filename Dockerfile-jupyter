@@ -1,4 +1,4 @@
-FROM mlrun/jupyter:1.6.2-rc6
+FROM mlrun/jupyter:1.6.2
 
 LABEL org.opencontainers.image.source=https://github.com/scc-digitalhub/jupyter-notebook-custom-image
 
@@ -6,7 +6,7 @@ LABEL org.opencontainers.image.source=https://github.com/scc-digitalhub/jupyter-
 RUN conda create -n digitalhub-core python=3.9 --no-default-packages
 
 # Clone digitalhub-core repo
-ARG DHUB_VERSION=0.4.0b4
+ARG DHUB_VERSION=0.4.0b5
 RUN wget https://github.com/scc-digitalhub/digitalhub-sdk/archive/refs/tags/$DHUB_VERSION.zip
 RUN unzip $DHUB_VERSION.zip
 RUN mv digitalhub-sdk-$DHUB_VERSION digitalhub-sdk
