@@ -1,4 +1,4 @@
-FROM mlrun/jupyter:1.6.2
+FROM mlrun/jupyter:1.6.2-rc6
 
 LABEL org.opencontainers.image.source=https://github.com/scc-digitalhub/jupyter-notebook-custom-image
 
