@@ -13,7 +13,8 @@ RUN mv digitalhub-sdk-$DHUB_VERSION digitalhub-sdk
 
 # Install remote-only dependencies in base kernel
 SHELL ["conda", "run", "-n", "base", "/bin/bash", "-c"]
-RUN pip install digitalhub-sdk/core digitalhub-sdk/data digitalhub-sdk/ml digitalhub-sdk/
+RUN pip install digitalhub-sdk/core --no-deps
+RUN pip install digitalhub-sdk/core digitalhub-sdk/data digitalhub-sdk/ml digitalhub-sdk/ --no-deps
 RUN pip install digitalhub-sdk/*/modules/* --no-deps
 
 # Install full dependencies in digitalhub-core kernel
@@ -22,11 +23,9 @@ RUN python -m pip install ipykernel
 RUN python -m ipykernel install --name digitalhub-core --display-name "digitalhub-core" --user
 
 # Install digitalhub, container, dbt, neferetem
-RUN pip install digitalhub-sdk/core 
-RUN pip install digitalhub-sdk/data digitalhub-sdk/ml digitalhub-sdk/ --no-deps
-RUN pip install digitalhub-sdk/core/modules/container
-RUN pip install digitalhub-sdk/data/modules/dbt --no-deps
-RUN pip install digitalhub-sdk/data/modules/nefertem --no-deps
+RUN pip install digitalhub-sdk/core --no-deps
+RUN pip install digitalhub-sdk/core digitalhub-sdk/data digitalhub-sdk/ml digitalhub-sdk/ --no-deps
+RUN pip install digitalhub-sdk/*/modules/* --no-deps
 RUN pip install dbt-postgres==1.6.7
 RUN pip install GitPython
 RUN pip install nefertem \
