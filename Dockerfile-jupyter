@@ -9,7 +9,7 @@ RUN conda create -n python310 python=3.10 --no-default-packages
 RUN conda create -n digitalhub-core python=3.9 --no-default-packages
 
 # Clone digitalhub-core repo
-ARG DHUB_VERSION=0.5.0b0
+ARG DHUB_VERSION=0.5.0b1
 RUN wget https://github.com/scc-digitalhub/digitalhub-sdk/archive/refs/tags/$DHUB_VERSION.zip
 RUN unzip $DHUB_VERSION.zip
 RUN mv digitalhub-sdk-$DHUB_VERSION digitalhub-sdk
@@ -26,8 +26,8 @@ RUN python -m pip install ipykernel
 RUN python -m ipykernel install --name digitalhub-core --display-name "digitalhub-core" --user
 
 # Install digitalhub, container, dbt, neferetem
-RUN pip install digitalhub-sdk/core --no-deps
-RUN pip install digitalhub-sdk/core digitalhub-sdk/data digitalhub-sdk/ml digitalhub-sdk/ --no-deps
+RUN pip install digitalhub-sdk/core digitalhub-sdk/data[pandas]
+RUN pip install digitalhub-sdk/ml digitalhub-sdk/ --no-deps
 RUN pip install digitalhub-sdk/*/modules/* --no-deps
 RUN pip install dbt-postgres==1.6.7
 RUN pip install GitPython
