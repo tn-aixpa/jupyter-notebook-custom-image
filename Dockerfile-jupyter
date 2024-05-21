@@ -2,6 +2,9 @@ FROM mlrun/jupyter:1.6.2-rc6
 
 LABEL org.opencontainers.image.source=https://github.com/scc-digitalhub/jupyter-notebook-custom-image
 
+# Create conda env for python310 kernel
+RUN conda create -n python310 python=3.10 --no-default-packages
+
 # Create conda env for digitalhub-core kernel
 RUN conda create -n digitalhub-core python=3.9 --no-default-packages
 
