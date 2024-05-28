@@ -23,7 +23,7 @@ RUN python -m ipykernel install --name python310 --display-name "python310" --us
 SHELL ["conda", "run", "-n", "base", "/bin/bash", "-c"]
 RUN pip install digitalhub-sdk/core --no-deps
 RUN pip install digitalhub-sdk/core digitalhub-sdk/data digitalhub-sdk/ml digitalhub-sdk/ --no-deps
-RUN pip install digitalhub-sdk/*/modules/*/ --no-deps
+RUN pip install digitalhub-sdk/runtimes/*/ --no-deps
 
 # Install full dependencies in digitalhub-core kernel
 SHELL ["conda", "run", "-n", "digitalhub-core", "/bin/bash", "-c"]
