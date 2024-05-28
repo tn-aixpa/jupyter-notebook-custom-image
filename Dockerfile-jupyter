@@ -14,6 +14,11 @@ RUN wget https://github.com/scc-digitalhub/digitalhub-sdk/archive/refs/tags/$DHU
 RUN unzip $DHUB_VERSION.zip
 RUN mv digitalhub-sdk-$DHUB_VERSION digitalhub-sdk
 
+# Install python310 kernel
+SHELL ["conda", "run", "-n", "python310", "/bin/bash", "-c"]
+RUN python -m pip install ipykernel
+RUN python -m ipykernel install --name python310 --display-name "python310" --user
+
 # Install remote-only dependencies in base kernel
 SHELL ["conda", "run", "-n", "base", "/bin/bash", "-c"]
 RUN pip install digitalhub-sdk/core --no-deps
