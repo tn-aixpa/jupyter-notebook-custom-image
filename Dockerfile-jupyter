@@ -24,6 +24,7 @@ SHELL ["conda", "run", "-n", "base", "/bin/bash", "-c"]
 RUN pip install digitalhub-sdk/core --no-deps
 RUN pip install digitalhub-sdk/core digitalhub-sdk/data digitalhub-sdk/ml digitalhub-sdk/ --no-deps
 RUN pip install digitalhub-sdk/runtimes/*/ --no-deps
+RUN pip install psycopg2-binary GitPython>=3
 
 # Install full dependencies in digitalhub-core kernel
 SHELL ["conda", "run", "-n", "digitalhub-core", "/bin/bash", "-c"]
