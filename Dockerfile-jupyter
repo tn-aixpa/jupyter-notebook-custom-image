@@ -2,60 +2,45 @@ FROM mlrun/jupyter:1.6.2-rc1
 
 LABEL org.opencontainers.image.source=https://github.com/scc-digitalhub/jupyter-notebook-custom-image
 
+ARG SDK_VERSION=0.6.0b1
+
 # Create conda env for python310 kernel
-RUN conda create -n python310 python=3.10 --no-default-packages
-
-# Create conda env for digitalhub-core kernel
-RUN conda create -n digitalhub-core python=3.9 --no-default-packages
-
-# Clone digitalhub-core repo
-ARG DHUB_VERSION=0.6.0b0
-RUN wget https://github.com/scc-digitalhub/digitalhub-sdk/archive/refs/tags/$DHUB_VERSION.zip
-RUN unzip $DHUB_VERSION.zip
-RUN mv digitalhub-sdk-$DHUB_VERSION digitalhub-sdk
+# and create conda env for digitalhub-core kernel
+RUN conda create -n python310 python=3.10 --no-default-packages && \
+    conda create -n digitalhub-core python=3.9 --no-default-packages
 
 # Install python310 kernel
 SHELL ["conda", "run", "-n", "python310", "/bin/bash", "-c"]
-RUN python -m pip install ipykernel
-RUN python -m ipykernel install --name python310 --display-name "python310" --user
+RUN python -m pip install ipykernel && \
+    python -m ipykernel install --name python310 --display-name "python310" --user
 
 # Install remote-only dependencies in base kernel
 SHELL ["conda", "run", "-n", "base", "/bin/bash", "-c"]
-RUN pip install digitalhub-sdk/core --no-deps
-RUN pip install digitalhub-sdk/core digitalhub-sdk/data digitalhub-sdk/ml digitalhub-sdk/ --no-deps
-RUN pip install digitalhub-sdk/runtimes/*/ --no-deps
-RUN pip install psycopg2-binary GitPython>=3
+RUN python -m pip install digitalhub-core[full]==${SDK_VERSION} && \
+    python -m pip install digitalhub==${SDK_VERSION} \
+                          digitalhub-data==${SDK_VERSION} \
+                          digitalhub-ml==${SDK_VERSION} \
+                          digitalhub-runtime-python==${SDK_VERSION} \
+                          digitalhub-runtime-mlrun==${SDK_VERSION} \
+                          digitalhub-runtime-container==${SDK_VERSION} \
+                          digitalhub-runtime-dbt==${SDK_VERSION} \
+                          digitalhub-runtime-nefertem==${SDK_VERSION} \
+                          digitalhub-runtime-kfp==${SDK_VERSION} --no-deps
+
 
 # Install full dependencies in digitalhub-core kernel
 SHELL ["conda", "run", "-n", "digitalhub-core", "/bin/bash", "-c"]
-RUN python -m pip install ipykernel
-RUN python -m ipykernel install --name digitalhub-core --display-name "digitalhub-core" --user
-
-# Install digitalhub, container, dbt, neferetem
-RUN pip install digitalhub-sdk/core digitalhub-sdk/data[pandas]
-RUN pip install digitalhub-sdk/ml digitalhub-sdk/ --no-deps
-RUN pip install digitalhub-sdk/runtimes/*/ --no-deps
-RUN pip install dbt-postgres==1.6.7
-RUN pip install GitPython
-RUN pip install nefertem \
-                nefertem-core \
-                nefertem-inference \
-                nefertem-profiling \
-                nefertem-validation
-
-# Install nefertem plugins
-ARG NEFERTEM_VERSION=2.0.6
-RUN wget https://github.com/scc-digitalhub/nefertem/archive/refs/tags/$NEFERTEM_VERSION.zip
-RUN unzip $NEFERTEM_VERSION.zip
-RUN mv nefertem-$NEFERTEM_VERSION nefertem
-RUN pip3 install ./nefertem
-RUN pip3 install ./nefertem/plugins/frictionless*
-RUN pip3 install ./nefertem/plugins/duckdb*
-RUN pip3 install ./nefertem/plugins/sqlalchemy*
-RUN pip3 install ./nefertem/plugins/ydata*
+RUN python -m pip install ipykernel && \
+    python -m ipykernel install --name digitalhub-core --display-name "digitalhub-core" --user && \
+    python -m pip install digitalhub==${SDK_VERSION} \
+                          digitalhub-core[full]==${SDK_VERSION} \
+                          digitalhub-data[pandas]==${SDK_VERSION} \
+                          digitalhub-ml==${SDK_VERSION} \
+                          digitalhub-runtime-python==${SDK_VERSION} \
+                          digitalhub-runtime-container==${SDK_VERSION} \
+                          digitalhub-runtime-kfp==${SDK_VERSION} && \
+    python -m pip install digitalhub-runtime-dbt[local]==${SDK_VERSION} && \
+    python -m pip install digitalhub-runtime-nefertem[local]==${SDK_VERSION}
 
 # Copy notebooks into tutorial folder
 COPY notebooks/ /home/jovyan/tutorials
-
-# Cleanup
-RUN rm -rf digitalhub-sdk nefertem $DHUB_VERSION.zip $NEFERTEM_VERSION.zip
