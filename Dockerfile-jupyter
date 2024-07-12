@@ -1,7 +1,8 @@
 FROM mlrun/jupyter:1.6.2-rc1
 
 LABEL org.opencontainers.image.source=https://github.com/scc-digitalhub/jupyter-notebook-custom-image
-
+RUN pip install jupyterlab-s3-browser
+RUN jupyter serverextension enable --py jupyterlab_s3_browser
 ARG SDK_VERSION=0.6.0b
 
 # Create conda env for python310 kernel
