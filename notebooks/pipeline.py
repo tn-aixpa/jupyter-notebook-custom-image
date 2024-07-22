@@ -1,11 +1,11 @@
-from digitalhub_core_kfp.dsl import pipeline_context
+from digitalhub_runtime_kfp.dsl import pipeline_context
 
 
-def myhandler(di_key):
+def my_pipeline(di_key):
     with pipeline_context() as pc:
         s1 = pc.step(
             name="step1",
-            function="mlrun-downloader",
+            function="downloader",
             action="job",
             inputs={"url": di_key},
             outputs={"dataset": "dataset"},
@@ -13,7 +13,7 @@ def myhandler(di_key):
 
         s2_1 = pc.step(
             name="step2.1",
-            function="mlrun-process-spire",
+            function="process-spire",
             action="job",
             inputs={"di": s1.outputs["dataset"]},
             outputs={"dataset-spire": "dataset-spire"},
@@ -21,7 +21,7 @@ def myhandler(di_key):
 
         s2_2 = pc.step(
             name="step2.2",
-            function="mlrun-process-measure",
+            function="process-measure",
             action="job",
             inputs={"di": s1.outputs["dataset"]},
             outputs={"dataset-measures": "dataset-measures"},
