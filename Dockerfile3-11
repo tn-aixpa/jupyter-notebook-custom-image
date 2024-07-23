@@ -17,3 +17,8 @@ RUN pip install jupyterlab-s3-browser && \
 
 # Copy notebooks into tutorial folder
 COPY notebooks/ tutorials/
+
+USER root
+RUN chown -R $NB_USER tutorials/
+
+USER $NB_USER
