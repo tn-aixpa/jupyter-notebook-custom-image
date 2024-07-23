@@ -1,0 +1,25 @@
+FROM jupyter/scipy-notebook:python-3.9
+
+LABEL org.opencontainers.image.source=https://github.com/scc-digitalhub/jupyter-notebook-custom-image
+
+ARG SDK_VERSION=0.6.0b
+
+RUN pip install jupyterlab-s3-browser && \
+    jupyter serverextension enable --py jupyterlab_s3_browser && \
+    python -m pip install 'digitalhub>=${SDK_VERSION}' \
+                          "digitalhub-core[full]>=${SDK_VERSION}" \
+                          "digitalhub-data[pandas]>=${SDK_VERSION}" \
+                          "digitalhub-ml>=${SDK_VERSION}" \
+                          "digitalhub-runtime-python>=${SDK_VERSION}" \
+                          "digitalhub-runtime-container>=${SDK_VERSION}"  && \
+    python -m pip install "digitalhub-runtime-dbt[local]>=${SDK_VERSION}" && \
+    python -m pip install "digitalhub-runtime-kfp>=${SDK_VERSION}" --no-deps
+
+# Copy notebooks into tutorial folder
+COPY notebooks/ tutorials/
+
+USER root
+RUN chown -R $NB_USER tutorials/
+
+USER $NB_USER
+
