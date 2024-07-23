@@ -12,8 +12,14 @@ jobs:
       fail-fast: false
       matrix:
         include:
-          - dockerfile: ./Dockerfile-jupyter
-            image: ghcr.io/${{ github.repository_owner }}/jupyter
+          - dockerfile: ./Dockerfile3-9
+            image: ghcr.io/${{ github.repository_owner }}/jupyter-3-9
+            context: ./
+          - dockerfile: ./Dockerfile-jupyter3-10
+            image: ghcr.io/${{ github.repository_owner }}/jupyter-3-10
+            context: ./
+          - dockerfile: ./Dockerfile-jupyter3-11
+            image: ghcr.io/${{ github.repository_owner }}/jupyter-3-11
             context: ./
     permissions:
       contents: read
