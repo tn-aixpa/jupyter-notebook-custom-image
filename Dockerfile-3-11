@@ -4,7 +4,7 @@ LABEL org.opencontainers.image.source=https://github.com/scc-digitalhub/jupyter-
 
 ARG SDK_VERSION=0.6.0b
 
-RUN python -m pip install 'digitalhub>=${SDK_VERSION}' \
+RUN python -m pip install "digitalhub>=${SDK_VERSION}" \
                           "digitalhub-core[full]>=${SDK_VERSION}" \
                           "digitalhub-data[pandas]>=${SDK_VERSION}" \
                           "digitalhub-ml>=${SDK_VERSION}" \
@@ -13,10 +13,3 @@ RUN python -m pip install 'digitalhub>=${SDK_VERSION}' \
     python -m pip install "digitalhub-runtime-dbt[local]>=${SDK_VERSION}" && \
     python -m pip install "digitalhub-runtime-kfp>=${SDK_VERSION}" --no-deps
 
-# Copy notebooks into tutorial folder
-COPY notebooks/ tutorials/
-
-USER root
-RUN chown -R $NB_USER tutorials/
-
-USER $NB_USER
