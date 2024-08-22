@@ -2,7 +2,7 @@ FROM jupyter/scipy-notebook:python-3.11
 
 LABEL org.opencontainers.image.source=https://github.com/scc-digitalhub/jupyter-notebook-custom-image
 
-ARG SDK_VERSION=0.6.0b
+ARG SDK_VERSION=0.7.0b
 
 RUN python -m pip install "digitalhub>=${SDK_VERSION}" \
                           "digitalhub-core[full]>=${SDK_VERSION}" \
