@@ -10,7 +10,7 @@ RUN python -m pip install "digitalhub>=${SDK_VERSION}" \
                           "digitalhub-ml>=${SDK_VERSION}" \
                           "digitalhub-runtime-python>=${SDK_VERSION}" \
                           "digitalhub-runtime-container>=${SDK_VERSION}"  \
-                          "digitalhub-runtime-modelserve>=${SDK_VERSION}" && \
-    python -m pip install "digitalhub-runtime-dbt[local]>=${SDK_VERSION}" && \
+                          "digitalhub-runtime-modelserve[local,mlflow,sklearn]>=${SDK_VERSION}" \
+                          "digitalhub-runtime-dbt[local]>=${SDK_VERSION}" && \
     python -m pip install "digitalhub-runtime-kfp>=${SDK_VERSION}" --no-deps
 
