@@ -2,15 +2,13 @@ FROM jupyter/scipy-notebook:python-3.11
 
 LABEL org.opencontainers.image.source=https://github.com/scc-digitalhub/jupyter-notebook-custom-image
 
-ARG SDK_VERSION=0.7.0b
+ARG VERSION_LOWER=0.7.0b
+ARG VERSION_UPPER=0.8.0
 
-RUN python -m pip install "digitalhub>=${SDK_VERSION}" \
-                          "digitalhub-core[full]>=${SDK_VERSION}" \
-                          "digitalhub-data[pandas]>=${SDK_VERSION}" \
-                          "digitalhub-ml>=${SDK_VERSION}" \
-                          "digitalhub-runtime-python>=${SDK_VERSION}" \
-                          "digitalhub-runtime-container>=${SDK_VERSION}"  \
-                          "digitalhub-runtime-modelserve[local,mlflow,sklearn]>=${SDK_VERSION}" \
-                          "digitalhub-runtime-dbt[local]>=${SDK_VERSION}" && \
-    python -m pip install "digitalhub-runtime-kfp>=${SDK_VERSION}" --no-deps
+RUN python -m pip install "digitalhub[full]>=${VERSION_LOWER}, <${VERSION_UPPER}" \
+                          "digitalhub-runtime-python>=${VERSION_LOWER}, <${VERSION_UPPER}" \
+                          "digitalhub-runtime-container>=${VERSION_LOWER}, <${VERSION_UPPER}"  \
+                          "digitalhub-runtime-modelserve>=${VERSION_LOWER}, <${VERSION_UPPER}" \
+                          "digitalhub-runtime-dbt[local]>=${VERSION_LOWER}, <${VERSION_UPPER}" && \
+    python -m pip install "digitalhub-runtime-kfp>=${VERSION_LOWER}, <${VERSION_UPPER}" --no-deps
 
