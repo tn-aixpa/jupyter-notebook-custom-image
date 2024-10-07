@@ -2,13 +2,15 @@ FROM jupyter/scipy-notebook:python-3.11
 
 LABEL org.opencontainers.image.source=https://github.com/scc-digitalhub/jupyter-notebook-custom-image
 
-ARG VERSION_LOWER=0.7.0
-ARG VERSION_UPPER=0.8.0
+ARG VERSION_LOWER=0.8.0b
+ARG VERSION_UPPER=0.9.0
 
+RUN python -m pip install jupyterlab-git && \
+    jupyter serverextension enable --py jupyterlab_git
 RUN python -m pip install "digitalhub[full]>=${VERSION_LOWER}, <${VERSION_UPPER}" \
                           "digitalhub-runtime-python>=${VERSION_LOWER}, <${VERSION_UPPER}" \
                           "digitalhub-runtime-container>=${VERSION_LOWER}, <${VERSION_UPPER}"  \
                           "digitalhub-runtime-modelserve>=${VERSION_LOWER}, <${VERSION_UPPER}" \
-                          "digitalhub-runtime-dbt[local]>=${VERSION_LOWER}, <${VERSION_UPPER}" && \
-    python -m pip install "digitalhub-runtime-kfp>=${VERSION_LOWER}, <${VERSION_UPPER}" --no-deps
+                          "digitalhub-runtime-dbt[local]>=${VERSION_LOWER}, <${VERSION_UPPER}" \
+                          "digitalhub-runtime-kfp>=${VERSION_LOWER}, <${VERSION_UPPER}"
 
