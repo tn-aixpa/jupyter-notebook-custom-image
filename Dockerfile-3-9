@@ -1,18 +1,4 @@
-FROM quay.io/jupyter/minimal-notebook:python-3.9
-
-SHELL ["/bin/bash", "-o", "pipefail", "-c"]
-
-USER root
-
-RUN apt-get update --yes && \
-    apt-get install --yes --no-install-recommends \
-    build-essential \
-    cm-super \
-    dvipng \
-    ffmpeg && \
-    apt-get clean && rm -rf /var/lib/apt/lists/*
-
-USER ${NB_UID}
+FROM jupyter/minimal-notebook:python-3.9
 
 LABEL org.opencontainers.image.source=https://github.com/scc-digitalhub/jupyter-notebook-custom-image
 
@@ -25,5 +11,3 @@ RUN python -m pip install "digitalhub[full]>=${VERSION_LOWER}, <${VERSION_UPPER}
                           "digitalhub-runtime-modelserve>=${VERSION_LOWER}, <${VERSION_UPPER}" \
                           "digitalhub-runtime-dbt[local]>=${VERSION_LOWER}, <${VERSION_UPPER}" \
                           "digitalhub-runtime-kfp>=${VERSION_LOWER}, <${VERSION_UPPER}"
-
-WORKDIR "${HOME}"
