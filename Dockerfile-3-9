@@ -2,7 +2,7 @@ FROM jupyter/minimal-notebook:python-3.9
 
 LABEL org.opencontainers.image.source=https://github.com/scc-digitalhub/jupyter-notebook-custom-image
 
-ARG VERSION_LOWER=0.8.0b
+ARG VERSION_LOWER=0.8.0
 ARG VERSION_UPPER=0.9.0
 
 RUN python -m pip install "digitalhub[full]>=${VERSION_LOWER}, <${VERSION_UPPER}" \
