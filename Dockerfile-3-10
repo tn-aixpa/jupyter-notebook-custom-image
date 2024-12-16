@@ -2,12 +2,16 @@ FROM jupyter/minimal-notebook:python-3.10
 
 LABEL org.opencontainers.image.source=https://github.com/scc-digitalhub/jupyter-notebook-custom-image
 
-ARG VERSION_LOWER=0.9.0b
-ARG VERSION_UPPER=0.10.0
+ARG ver_sdk=0.9.0b3
+ARG ver_python=0.9.0b1
+ARG ver_container=0.9.0b1
+ARG ver_modelserve=0.9.0b1
+ARG ver_dbt=0.9.0b1
+ARG ver_kfp=0.9.0b2
 
-RUN python -m pip install "digitalhub[full]>=${VERSION_LOWER}, <${VERSION_UPPER}" \
-                          "digitalhub-runtime-python>=${VERSION_LOWER}, <${VERSION_UPPER}" \
-                          "digitalhub-runtime-container>=${VERSION_LOWER}, <${VERSION_UPPER}"  \
-                          "digitalhub-runtime-modelserve>=${VERSION_LOWER}, <${VERSION_UPPER}" \
-                          "digitalhub-runtime-dbt[local]>=${VERSION_LOWER}, <${VERSION_UPPER}" \
-                          "digitalhub-runtime-kfp>=${VERSION_LOWER}, <${VERSION_UPPER}"
+RUN python -m pip install "digitalhub[full]==${ver_sdk}" \
+                          "digitalhub-runtime-python==${ver_python}" \
+                          "digitalhub-runtime-container==${ver_container}"  \
+                          "digitalhub-runtime-modelserve==${ver_modelserve}" \
+                          "digitalhub-runtime-dbt[local]==${ver_dbt}" \
+                          "digitalhub-runtime-kfp==${ver_kfp}"
