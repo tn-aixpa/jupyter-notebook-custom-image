@@ -13,13 +13,13 @@ jobs:
       matrix:
         include:
           - dockerfile: ./Dockerfile-3-9
-            image: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}/jupyter-3-9
+            image: ghcr.io/${{ github.repository }}/jupyter-3-9
             context: ./
           - dockerfile: ./Dockerfile-3-10
-            image: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}/jupyter-3-10
+            image: ghcr.io/${{ github.repository }}/jupyter-3-10
             context: ./
           - dockerfile: ./Dockerfile-3-11
-            image: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}/jupyter-3-11
+            image: ghcr.io/${{ github.repository }}/jupyter-3-11
             context: ./
     permissions:
       contents: read
