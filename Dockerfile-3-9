@@ -2,7 +2,7 @@ FROM jupyter/minimal-notebook:python-3.9
 
 LABEL org.opencontainers.image.source=https://github.com/scc-digitalhub/jupyter-notebook-custom-image
 
-ARG ver_sdk=0.9.0
+ARG ver_sdk=0.9.1
 ARG ver_python=0.9.0
 ARG ver_container=0.9.0
 ARG ver_modelserve=0.9.0
