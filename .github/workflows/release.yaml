@@ -61,7 +61,7 @@ jobs:
           event_type="trigger-workflow"
           lib_name="jupyter"
           lib_vers=${{ github.event.release.tag_name }}
-          branch=${{ github.ref }}
+          branch=$(git rev-parse --abbrev-ref HEAD)
 
           curl -L \
             -X POST \
