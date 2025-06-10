@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 FROM jupyter/minimal-notebook:python-3.11
 
 LABEL org.opencontainers.image.source=https://github.com/scc-digitalhub/jupyter-notebook-custom-image
