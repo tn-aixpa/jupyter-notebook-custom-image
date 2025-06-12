@@ -1,6 +1,6 @@
 # Jupyter Notebook Custom Image
 
-[![license](https://img.shields.io/badge/license-Apache%202.0-blue)](https://github.com/scc-digitalhub/digitalhub-core/LICENSE) ![GitHub Release](https://img.shields.io/github/v/release/scc-digitalhub/repo-template)
+[![license](https://img.shields.io/badge/license-Apache%202.0-blue)](https://github.com/scc-digitalhub/digitalhub-core/LICENSE) ![GitHub Release](https://img.shields.io/github/v/release/scc-digitalhub/jupyter-notebook-custom-image)
 ![Status](https://img.shields.io/badge/status-stable-gold)
 
 Jupyter Notebook custom image used in Digitalhub Platform.
