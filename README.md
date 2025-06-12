@@ -5,7 +5,6 @@
 
 Jupyter Notebook custom image used in Digitalhub Platform.
 
-
 ## Configuration
 
 Dockerfile parameters can be set to customize the image. Parameters refers to PYPI package versions of [SDK](https://github.com/scc-digitalhub/digitalhub-sdk) and related runtimes. The following parameters are available:
