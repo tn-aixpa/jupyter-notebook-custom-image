@@ -25,8 +25,18 @@ See CONTRIBUTING for contribution instructions.
 To build the container image, you need to have Docker installed. Use the following command to build the image:
 
 ```bash
-docker build -f Dockerfile-3-[VERSION] .
+docker build -t jupyter-notebook-custom:3.[VERSION] -f Dockerfile-3-[VERSION] .
 ```
+
+### Launch container
+
+To run the container, use the following command:
+
+```bash
+docker run -p 8888:8888 jupyter-notebook-custom:3.[VERSION]
+```
+
+Once started, the container will output a URL with a token that you can use to access the Jupyter notebook interface in your browser.
 
 ## Security Policy
 
